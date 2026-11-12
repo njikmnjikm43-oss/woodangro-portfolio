@@ -303,8 +303,7 @@ def web():
 <div class="p-main">
   <figure class="rv">{img("img/web/d-main.jpg", "woodangro.kr 메인 — 포스터", R, "shot", gallery="web", title="woodangro.kr", lazy=False)}<figcaption class="mono">메인 — 흑백 삽화를 빨강·노랑 두 색으로 바꾸고, 영어 · 한자 · 일본어로만 지면을 채웠습니다.</figcaption></figure>
   <div class="prose rv">
-    <p class="first">책 소개 페이지로 시작한 사이트가 2주 동안 스물한 번 바뀌었습니다. 마지막에 남은 건 잡지의 한 펼침면 같은 메인입니다.</p>
-    <p>메인의 큰 글자들이 곧 문입니다. CARDS를 누르면 연초 카드를 섞는 방, 映畫館을 누르면 낭독 영상을 트는 극장, LISTEN은 카세트 라디오, FLASH GAME은 옛날 컴퓨터로 이어집니다. 설명 대신 장소를 만들고 싶었습니다.</p>
+    <p class="first">메인의 큰 글자들이 곧 문입니다. CARDS를 누르면 연초 카드를 섞는 방, 映畫館을 누르면 낭독 영상을 트는 극장, LISTEN은 카세트 라디오, FLASH GAME은 옛날 컴퓨터로 이어집니다. 설명 대신 장소를 만들고 싶었습니다.</p>
   </div>
 
   <h2 class="sec-label mono" style="font-weight:400"><span>[ 방 ]</span><span class="mute">04</span></h2>
