@@ -1,0 +1,272 @@
+# 포트폴리오 v2 (遇當路 한 줄의 길) 생성기 — python3 _build_v2.py
+import html, os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+E = html.escape
+HEAD = open('_head.html', encoding='utf-8').read()
+TAIL = open('_tail.html', encoding='utf-8').read()
+
+EXTRA_CSS = '''
+.g{display:grid;gap:12px;margin-top:18px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.g figure{margin:0}.g figcaption{margin-top:6px}
+.g img{width:100%;height:auto;border:1px solid var(--rule);background:#fff}
+.quote{margin:18px 0 0;background:var(--card);border-left:3px solid var(--road);padding:20px 24px;font-family:var(--serif);font-size:16px;line-height:1.95;color:#2c2925;max-width:40em}
+.quote .src{display:block;margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--mute)}
+.count{border-collapse:collapse;margin-top:14px;font-size:14px;min-width:min(420px,100%)}
+.count td{border-bottom:1px solid var(--rule);padding:8px 10px 8px 0}
+.count td.n{font-family:var(--mono);color:var(--road);text-align:right;padding-right:0}
+.persona{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin-top:16px;background:var(--card);border:1px solid var(--rule);padding:16px 18px;font-size:14.5px;max-width:36em}
+.persona dt{font-family:var(--mono);font-size:11.5px;color:var(--mute);padding-top:2px}
+.persona dd{margin:0}
+.roles3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.roles3.r4{grid-template-columns:repeat(4,1fr)}
+.hero.fit{background:#e9e4d8}.hero.fit img{object-fit:contain;padding:3%}
+.roles3 div{background:var(--card);border:1px solid var(--rule);padding:16px}
+.roles3 b{display:block;font-family:var(--serif);font-size:20px;margin-bottom:4px}
+.roles3 span{font-size:13.5px;color:#4a4540;line-height:1.6}
+@media (max-width:820px){.g3,.g4,.g5{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.roles3,.roles3.r4{grid-template-columns:1fr}}
+'''
+
+
+def chk():
+    return '<span class="chk">확인</span>'
+
+
+def fill(label, text, style=''):
+    return f'<div class="fill"{style}><p class="mono">{label}</p><p>{text}</p></div>'
+
+
+def figs(items, cols='g3'):
+    out = ''.join(f'<figure><img src="{src}" alt="{E(alt)}" loading="lazy"><figcaption class="mono mute">{E(cap)}</figcaption></figure>' for src, alt, cap in items)
+    return f'<div class="g {cols}">{out}</div>'
+
+
+def step(no, label, h3, sub, body):
+    return f'''
+    <div class="step">
+      <header data-stop="" data-x="-1"><p class="no">{no} — {label}</p><h3>{h3}</h3><p>{sub}</p></header>
+      <div class="body">{body}</div>
+    </div>'''
+
+
+def project(n, pid, title, en, hero, hero_alt, ov_q, ov_m, meta, steps, fit=False):
+    dl = ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in meta)
+    return f'''
+<section class="proj" id="{pid}" aria-labelledby="{pid}t">
+  <div class="wrap">
+    <div class="p-title" data-stop="{n}" data-x="-1"><span class="no">{n}</span><h2 id="{pid}t">{title}</h2><span class="en">{en}</span></div>
+    <div class="hero{" fit" if fit else ""}"><img src="{hero}" alt="{E(hero_alt)}" loading="lazy"></div>
+    <div class="band">
+      <div><h3>OVERVIEW — 질문</h3><p>{ov_q}</p></div>
+      <div><h3>OVERVIEW — 만든 것</h3><p>{ov_m}</p></div>
+      <dl>{dl}</dl>
+    </div>{''.join(steps)}
+  </div>
+</section>'''
+
+
+# ───────── 01 해방일기 ─────────
+EPS = [
+    ('01', 'qJzbJj1FUGI', '21:15', '알라틴, 성인아이, 그리고 알아넌으로 살아가는 ‘마련이’의 이야기'),
+    ('02', '7trahGauHIw', '20:14', '고마운 나에게, 나를 찾아가는 ‘마련이’의 여정'),
+    ('03', 'Dc5gdMI8tTI', '18:17', '죽고 싶었던 밤들을 지나, 비로소 죽음을 잘 준비하기까지 (팟캐스트)'),
+    ('04', 'KfY3VjXa20M', '21:28', '죽고 싶었던 밤들을 지나, 비로소 죽음을 잘 준비하기까지'),
+    ('05', 'OWx5TZaEwDQ', '20:29', '알코올 중독자의 자식들이 어떤 고통 속에서 자라는지, 낱낱이 말하고 싶었어요 · 1편'),
+    ('06', '5vOzqdFsczY', '23:48', '알코올 중독자의 자식들이 어떤 고통 속에서 자라는지, 낱낱이 말하고 싶었어요 · 2편'),
+    ('07', 'vMSKuKwVqK4', '20:36', '“막상 성인이 되니까, 그 술병이랑 너무 친해져 있더라고요” · 1편'),
+    ('08', 'r9468XcXdr8', '23:50', '“내 인생에서 해방은 죽음이라고 생각했어요” · 2편'),
+]
+eps_rows = ''.join(f'<tr><td>EP {n}</td><td><a href="https://www.youtube.com/watch?v={v}" target="_blank" rel="noopener">{E(t)}</a></td><td class="w">{d}</td></tr>' for n, v, d, t in EPS)
+
+P1 = project('01', 'p1', '해방일기', 'HAEBANG DIARY · 2026', 'img/haebang-hero.jpg', '해방일기 유튜브 섬네일 — 고양이와 책, 해가 뜬 바닷가 마을 그림',
+    '알코올 중독 가정에서 자란 ‘성인아이’들은 자기 이야기를 어디서, 어떤 속도로 꺼낼 수 있을까. 춘천시중독관리통합지원센터의 ‘해방일기’는 치료적 글쓰기와 말하기로 그 이야기를 마주하는 프로젝트입니다.',
+    '중독예방 서포터즈로 참여해 네 사람을 인터뷰하고, 그 이야기를 영상과 팟캐스트 여덟 편으로 편집했습니다. 촬영은 플레인어스와 함께했고, 센터와 강원시청자미디어센터가 제작을 지원했습니다.',
+    [('작업기간', '2026 · 공개 07. 27' + chk()), ('기여도', '인터뷰 · 편집 단독<br>촬영 공동 (플레인어스)'), ('역할', '인터뷰어 · 편집자 · 촬영'), ('프로그램', '— ' + chk()), ('결과', '4명 · 8편<br>유튜브 · 팟캐스트 공개')],
+    [
+        step('01', '질문', '말하기 어려운 이야기', '왜 이 사람들의 이야기였나',
+             '<p>알코올 중독 가정에서 자란 네 사람이 카메라 앞에서 자기 이야기를 했습니다. 저는 질문을 하고, 그 이야기가 듣는 사람에게 닿는 형태로 정리하는 역할을 맡았습니다.</p>'
+             + fill('원빈 님이 채울 자리', '처음 이 작업을 맡았을 때 가장 조심한 것 한 가지. (두세 문장 — 예: 질문의 순서, 말을 끊지 않는 법, 편집에서 지키려 한 선)')),
+        step('02', '기획', '한 편의 구성', '각 편이 같은 순서로 흐르게',
+             '<p>여덟 편은 모두 같은 뼈대 위에 있습니다. 끝에서 시작하고, 말하는 사람이 멈출 수 있는 약속을 먼저 정한 뒤 본 이야기로 들어갑니다. 한 사람당 두 편씩, 네 사람의 이야기를 담았습니다.</p>'
+             '<ol class="flow" aria-label="한 편의 흐름"><li class="hi">에필로그</li><li class="arr">→</li><li>오프닝</li><li class="arr">→</li><li>자기소개</li><li class="arr">→</li><li class="hi">세이프 워드</li><li class="arr">→</li><li>성인아이로서의 이야기</li><li class="arr">→</li><li>가정 안의 알코올</li></ol>'
+             '<div class="people"><div><b>마련이</b><span>EP 01 – 02</span></div><div><b>백합임</b><span>EP 03 – 04</span></div><div><b>물티슈</b><span>EP 05 – 06</span></div><div><b>이누</b><span>EP 07 – 08</span></div></div>'
+             + fill('원빈 님이 채울 자리', '에필로그로 시작한 이유, 세이프 워드를 둔 이유 — 각 한 문장.')),
+        step('03', '원고', '질문과 편집', '에디터를 뽑는 사람이 가장 오래 보는 칸',
+             '<div class="pair">' + fill('질문지 일부', '실제로 던진 질문 서너 개. 첫 질문과 가장 어려웠던 질문을 꼭 포함.', ' style="margin:0"')
+             + fill('편집 전 → 후', '녹취 원문 한 단락과, 영상에 들어간 형태 한 단락. 무엇을 덜어냈는지 한 줄 설명.', ' style="margin:0"') + '</div>'),
+        step('04', '발행', '여덟 편', '유튜브 ‘해방일기’ 채널 · 팟캐스트',
+             f'<table class="eps">{eps_rows}</table>'
+             + figs([('img/haebang-hero.jpg', '해방일기 영상 섬네일', '유튜브 섬네일'), ('img/haebang-key.jpg', '해방일기 대표 이미지', '프로젝트 대표 이미지')], 'g2')
+             + fill('원빈 님이 채울 자리 (있으면)', '센터나 출연자에게서 들은 반응 한 줄, 또는 이 작업이 이후 어디로 이어졌는지.')),
+    ])
+
+# ───────── 02 책 ─────────
+B = '../img/book/'
+P2 = project('02', 'p2', '주먹 쥔 손으로 쓰다듬지 못해서', 'FIRST NOVEL · 2026', B + 'cover-spread.jpg', '『주먹 쥔 손으로 쓰다듬지 못해서』 표지 펼침면',
+    '함께 산다는 것은 무엇일까. 사랑하는 사람들의 관계 자체보다, 관계 이후에 남겨지는 것들과 남겨진 사람들에 대해 쓰고 싶었습니다.',
+    '엇갈리는 네 사람의 시점으로 쓴 첫 소설입니다. 집필부터 퇴고, 표지와 내지 디자인까지 직접 하고 독립출판으로 펴냈습니다. 인디펍 · 2026년 11월 13일 출간.',
+    [('작업기간', '— ' + chk() + '<br>출간 2026. 11. 13'), ('기여도', '집필 · 편집 · 디자인 단독<br>유통 인디펍'), ('역할', '작가 · 편집 · 북디자인'), ('프로그램', 'InDesign · — ' + chk()), ('결과', '128×182mm · 208쪽<br>서점 네 곳 유통')],
+    [
+        step('01', '질문', '한 문장에서', '모든 장면을 재는 기준',
+             '<p>원고 전체를 한 문장에 맞춰 재며 썼습니다. 장면을 넣고 뺄 때마다 이 문장을 증명하는지, 흐리는지를 먼저 봤습니다.</p>'
+             '<p class="quote">사랑은 증거를 남기지만, 증거는 사랑을 증명할 수 없다.<span class="src">기준 문장</span></p>'
+             '<dl class="persona"><dt>기준 독자</dt><dd>27세 · 초등학교 교사. 밥을 차려 두고, 상대가 방으로 들어가는 걸 보는 사람.</dd><dt>쓰임</dt><dd>장면이 이 사람에게 설명 없이 읽히는지로 판단</dd></dl>'),
+        step('02', '기획', '네 사람, 엇갈리는 시점', '같은 식탁을 다른 눈으로',
+             '<p>작가 류, 카페에서 일하는 지연, 그리고 두 사람 곁의 사람들. 같은 사건을 네 사람이 서로 다른 자리에서 보도록 장을 나눴습니다. 제목도 원고와 함께 바뀌었습니다.</p>'
+             '<ol class="flow" aria-label="제목의 변화"><li>흔적을 확인한답시고</li><li class="arr">→</li><li>흔적을 찾는답시고</li><li class="arr">→</li><li class="hi">주먹 쥔 손으로 쓰다듬지 못해서</li></ol>'
+             + fill('원빈 님이 채울 자리', '제목을 마지막에 바꾼 이유 한두 문장.')),
+        step('03', '원고', '퇴고의 기준', '초고 약 62,000자 전수 검토',
+             '<p>초고를 처음부터 끝까지 검색해, 습관처럼 반복되는 동작 묘사를 세었습니다. 많이 나온 것부터 장면마다 꼭 필요한지 따져 덜어냈습니다.</p>'
+             '<table class="count"><tr><td>진동 · 알림이 울린다</td><td class="n">45</td></tr><tr><td>식사 소리 (달그락)</td><td class="n">42</td></tr><tr><td>향이 풍긴다 · 냄새를 맡는다</td><td class="n">31</td></tr><tr><td>웃는다 · 미소</td><td class="n">30</td></tr><tr><td>고개를 끄덕인다</td><td class="n">29</td></tr></table>'
+             '<p class="mono mute" style="margin-top:6px">초고 기준 횟수 · 2026. 09</p>'
+             '<p class="quote">자리에서 일어나 쓰레기를 버리고 돌아오니, 앞자리는 비어 있었다. 대신 안방 쪽의 화장실 문이 닫히는 소리가 울렸고, 이어서 샤워기 물이 나오는 소리가 들렸다. 식탁 위에는 서로 다른 파스타 두 접시만 남겨져 있었다.<span class="src">1장 「배부른 줄도 모르고」 · 류</span></p>'
+             + fill('원빈 님이 채울 자리', '퇴고 전 → 후 한 쌍. 같은 장면의 초고 문단과 책에 실린 문단.')),
+        step('04', '발행', '책이라는 물건', '판형 · 내지 · 메신저 지면 · 표지',
+             '<p>본문 글자를 조금 크게, 간격을 넉넉하게 잡아 부모님 세대와 제 또래가 같은 책을 읽을 수 있게 했습니다. 소설 속 문자메시지는 실제 메신저 화면처럼, 읽지 않은 ‘1’까지 지면에 옮겼습니다.</p>'
+             + figs([(B + 'sp-ch1.jpg', '차례와 1장 표제지', '차례 · 1장 표제지'), (B + 'sp-msg.jpg', '메신저 화면을 옮긴 156–157쪽', '메신저 지면'), (B + 'sp-19.jpg', '18–19쪽', '본문')], 'g3')
+             + figs([(B + 'proc-silhouette.jpg', '꽃 실루엣 작업', '표지 — 실루엣'), (B + 'proc-draft.jpg', '제목을 얹은 초안', '표지 — 초안'), (B + 'cover.jpg', '최종 앞표지', '표지 — 최종')], 'g3')
+             + '<p style="margin-top:16px">인디펍 · 교보문고 · YES24 · 알라딘에서 판매합니다.</p>'
+             + fill('실사 컷 자리', '11. 13–14 텍스트힙 북페어 창원 — 매대 위의 책, 책을 펼친 손님의 손.')),
+    ], fit=True)
+
+# ───────── 03 인스타그램 연재 ─────────
+SERIES = [(1, '오른눈', 10), (2, '올해는 기쁜 일이 있으려나', 6), (3, '장마의 형태', 9), (4, '흑백인간', 8), (5, '단편소설', 8)]
+I = '../img/ig/'
+P3 = project('03', 'p3', '인스타그램 연재', 'INSTAGRAM SERIES · @woodang_ro', 'img/ig-hero.jpg', '인스타그램 연재 다섯 편의 첫 장',
+    '피드를 넘기는 손가락이 멈추는 건 몇 초입니다. 그 안에 짧은 글 한 편을 끝까지 읽히게 하려면 무엇을 줄이고, 무엇을 보여줘야 할까.',
+    '‘우당로’라는 이름으로 짧은 조각글을 직접 조판해 이미지로 올렸습니다. 다섯 편, 41장. 이 연재에서 쌓인 이야기들이 첫 소설로 이어졌습니다.',
+    [('작업기간', '— ' + chk()), ('기여도', '글 · 조판 · 운영 단독'), ('역할', '작가 · 에디터 · 채널 운영'), ('프로그램', '— ' + chk()), ('결과', '5편 · 41장<br>— 반응 지표 ' + chk())],
+    [
+        step('01', '질문', '몇 초 안에', '피드에서 글이 읽히는 조건',
+             '<p>한 편을 여러 장으로 나눠 올렸습니다. 첫 장은 제목을 단 표지이고, 넘길수록 글이 이어집니다.</p>'
+             + fill('원빈 님이 채울 자리', '조판할 때 지킨 원칙 두세 가지 — 예: 한 장에 몇 줄, 글자 크기, 어디서 끊는지.')),
+        step('02', '기획', '다섯 편의 표지', '편마다 다른 얼굴',
+             figs([(f'{I}s{s}-01.jpg', t, t) for s, t, n in SERIES], 'g5')),
+        step('03', '원고', '한 편을 처음부터 끝까지', '오른눈 · 10장',
+             figs([(f'{I}s1-{k:02d}.jpg', f'오른눈 {k}', f'{k:02d}') for k in range(1, 11)], 'g5')
+             + fill('원빈 님이 채울 자리', '이 편을 대표로 고른 이유, 또는 가장 반응이 좋았던 편과 그 이유.')),
+        step('04', '발행', '채널', '@woodang_ro',
+             '<p>연재는 인스타그램 @woodang_ro에 올렸고, 여기서 쌓인 이야기들이 첫 소설 『주먹 쥔 손으로 쓰다듬지 못해서』로 이어졌습니다.</p>'
+             + fill('실사 컷 자리 (있으면)', '피드 그리드 캡처 한 장, 또는 저장 · 공유 수가 보이는 인사이트 캡처.')),
+    ])
+
+# ───────── 04 우당로의 기록 ─────────
+PODEPS = [
+    ('첫번째 기록', '처음의 엉망', '2025. 12. 05', '류근 『사랑이 다시 내게 말을 거네』', '첫사랑의 흔적과 처음의 마음'),
+    ('두번째 기록', '녹음으로 푸르러진 두번째 기회', '2025. 12. 12', '드라마 『폭싹 속았수다』', '부모님의 겨울 아래에서 자란 푸름'),
+    ('세번째 기록', '아직, 잘 모르겠습니다', '2025. 12. 19', '김화진 『우연한 작별, 우연한 작별』', '끝난 뒤에야 시작되는 감정'),
+    ('네번째 기록', '오늘이라고 부르기로 했다', '2026. 01. 23', '영화 『에브리씽 에브리웨어 올 앳 원스』', '각본 없는 삶에서 선택을 껴안는 법'),
+]
+pod_rows = ''.join(f'<tr><td>{a}</td><td>{E(b)}<br><span class="mono mute">{E(src)} · {E(th)}</span></td><td class="w">{d}</td></tr>' for a, b, d, src, th in PODEPS)
+P4 = project('04', 'p4', '우당로의 기록', 'PODCAST · 2025 – 2026', 'img/pod-hero.jpg', '팟캐스트 우당로의 기록 1–4화 커버',
+    '글 밖에서 하고 싶은 말이 생겼습니다. 혼자 쓰는 글이 아니라, 듣는 사람과 같이 걷는 형식으로 말할 수 있을까.',
+    '한 회에 한 문장 — 책이나 드라마, 영화 속 한 문장에 기대어 하나의 감정을 함께 걸어가는 팟캐스트입니다. 기획, 대본, 진행, 녹음, 편집까지 혼자 했습니다.',
+    [('작업기간', '2025. 12 – 2026. 01'), ('기여도', '단독'), ('역할', '기획 · 대본 · 진행 · 편집'), ('프로그램', '— ' + chk()), ('결과', '4화 · 팟빵 공개')],
+    [
+        step('01', '질문', '같이 걷는 말', '왜 글이 아니라 목소리였나',
+             fill('원빈 님이 채울 자리', '팟캐스트를 시작한 이유를 말로 풀어 주세요. 정리는 제가 하겠습니다.')),
+        step('02', '기획', '한 회의 형식', '매회 같은 틀, 다른 문장',
+             '<p>모든 회는 같은 틀을 지킵니다. 한 문장을 고르고, 그 문장이 건드리는 감정 하나를 정하고, 같은 인사로 닫습니다.</p>'
+             '<ol class="flow" aria-label="한 회의 흐름"><li>한 감정</li><li class="arr">→</li><li class="hi">한 문장</li><li class="arr">→</li><li>함께 걷기</li><li class="arr">→</li><li>듣는 사람에게 묻기</li><li class="arr">→</li><li class="hi">닫는 인사</li></ol>'
+             '<p class="quote">감정이 머무는 길, 우연이 당도하는 곳. 오늘도 편안한 산책이 되기를 바랍니다.<span class="src">매회 닫는 인사</span></p>'),
+        step('03', '원고', '회차 소개글', '대본의 첫 문장들',
+             '<p class="quote">처음은 늘 조금 엉망입니다. 어디서부터 잘못 엉킨 건지도 모르고, 어쩌다 마음이 그렇게 기울어버렸는지 설명하기도 어렵습니다.<span class="src">첫번째 기록 「처음의 엉망」 소개글</span></p>'
+             + fill('원빈 님이 채울 자리', '한 회의 대본 일부 (도입 1분 분량).')),
+        step('04', '발행', '네 번의 기록', '팟빵 · 우당로의 기록',
+             f'<table class="eps">{pod_rows}</table>'
+             + figs([(f'img/pod-ep{i}.jpg', f'{i}화 커버', f'{i}화 커버') for i in range(1, 5)], 'g4')),
+    ])
+
+# ───────── 05 woodangro.kr ─────────
+W = '../img/web/'
+P5 = project('05', 'p5', 'woodangro.kr', 'BOOK SITE · 2026', W + 'd-main.jpg', 'woodangro.kr 메인 — 포스터',
+    '책 소개 페이지는 대부분 한 번 보고 닫힙니다. 책을 읽기 전에, 책 속 장면에 먼저 들어가 머물게 할 수는 없을까.',
+    '포스터 한 장을 입구로, 연초 카드를 섞는 방 · 낭독 영화관 · 카세트 라디오 · 게임 네 개의 방을 만들었습니다. 1장 미리 읽기, 심리 테스트, 메신저 게임 ‘읽지 않음’도 책의 문장으로 썼습니다.',
+    [('작업기간', '2026. 10. 30 – 11. 12'), ('기여도', '기획 · 글 · 디자인 단독'), ('역할', '콘텐츠 기획 · 웹 디자인'), ('프로그램', 'HTML · CSS · JS · AI ' + chk()), ('결과', '방 4개 + 콘텐츠 3종<br>21번 고쳐 공개')],
+    [
+        step('01', '질문', '설명 대신 장소', '책 소개가 아니라 책 속으로',
+             '<p>줄거리를 설명하는 대신, 책에 나오는 물건과 장면을 방으로 만들었습니다. 들어온 사람이 무엇을 누를지 스스로 고르게 했습니다.</p>'),
+        step('02', '기획', '네 개의 방', '책의 물건 → 사이트의 방',
+             '<div class="roles3 r4"><div><b>CARD</b><span>연초 카드 열두 장을 섞어 다섯 장씩. 누르면 그 장면의 본문.</span></div><div><b>映畫館</b><span>극장 스크린에서 낭독 영상 상영.</span></div><div><b>LISTEN</b><span>카세트를 넣으면 낭독과 노래 일곱 곡.</span></div><div><b>GAME</b><span>티켓을 모니터에 넣으면 심리 테스트 · 읽지 않음.</span></div></div>'
+             + figs([(W + 'd-card.jpg', 'CARD', 'CARD'), (W + 'd-cinema.jpg', '映畫館', '映畫館'), (W + 'd-listen.jpg', 'LISTEN', 'LISTEN'), (W + 'd-game.jpg', 'FLASH GAME', 'FLASH GAME')], 'g2')),
+        step('03', '원고', '사이트 안의 글', '심리 테스트 · 읽지 않음',
+             fill('원빈 님이 채울 자리', '심리 테스트 문항 하나와 결과 문구 하나, ‘읽지 않음’ 대사 몇 줄 중 보여주고 싶은 것.')),
+        step('04', '발행', '스물한 번', '첫 공개부터 지금까지',
+             '<p>10월 30일 첫 공개 이후 2주 동안 스물한 번 고쳤습니다. 카세트 라디오, 카지노, 1970년대 빠칭코를 거쳐 지금의 포스터 메인이 됐습니다.</p>'
+             '<figure style="margin:16px 0 0"><video src="../media/web-making.mp4" poster="../media/web-making-poster.jpg" controls preload="none" playsinline style="width:100%;background:#000"></video><figcaption class="mono mute" style="margin-top:6px">과정 영상 · 30초 · 무음</figcaption></figure>'
+             + figs([(W + 'm-main.jpg', '모바일 메인', '모바일 메인'), (W + 'm-card.jpg', '모바일 CARD', 'CARD'), (W + 'm-cinema.jpg', '모바일 映畫館', '映畫館'), (W + 'm-listen.jpg', '모바일 LISTEN', 'LISTEN'), (W + 'm-game.jpg', '모바일 GAME', 'GAME')], 'g5')),
+    ])
+
+# ───────── 06 굿즈 세트 ─────────
+P6 = project('06', 'p6', '굿즈 세트', 'OBJECTS · 2026', 'img/goods-set.jpg', '책, 연초 카드, 낭독 NFC 키링을 한 장에 모은 세트',
+    '책을 덮은 뒤에도 문장이 손에 남을 수 있을까. 읽는 사람이 책 밖으로 가져갈 수 있는 물건을 만들고 싶었습니다.',
+    '책 속 열두 장면을 옮긴 연초 카드, 문장을 말아 담은 틴케이스, 휴대폰을 대면 낭독이 재생되는 NFC 키링. 세 물건이 책의 장면 · 문장 · 목소리를 하나씩 맡습니다.',
+    [('작업기간', '— ' + chk()), ('기여도', '기획 · 문안 · 디자인 단독<br>제작 — ' + chk()), ('역할', '기획 · 에디터 · 디자인'), ('프로그램', '— ' + chk()), ('결과', '카드 12종 · 키링 · 틴케이스')],
+    [
+        step('01', '질문', '책 밖의 문장', '물건이 맡는 역할',
+             '<div class="roles3"><div><b>장면</b><span>연초 카드 — 옛 담뱃갑 속 카드처럼, 앞면엔 그림과 한 줄, 뒷면엔 그 장면의 본문.</span></div><div><b>문장</b><span>틴케이스 — 소설 속 문장을 담배 모양으로 말아 담았습니다.</span></div><div><b>목소리</b><span>NFC 키링 — 휴대폰을 대면 낭독이 바로 재생됩니다.</span></div></div>'),
+        step('02', '기획', '연초 카드 열두 장', '앞면 한 줄 · 뒷면 본문',
+             figs([(B + f'card-{k:02d}.jpg', f'연초 카드 No.{k:02d}', f'No.{k:02d}') for k in (1, 4, 6, 9, 12)], 'g5')
+             + figs([(B + 'cardback-01.jpg', '연초 카드 No.01 뒷면', 'No.01 뒷면 — 1장 본문'), (B + 'cardback-10.jpg', '연초 카드 No.10 뒷면', 'No.10 뒷면')], 'g4')),
+        step('03', '원고', '낭독이 재생되는 키링', '들고 다니는 목소리',
+             '<p>대면 소리가 나는 물건. 키링 속지는 반으로 접는 양면이고, 휴대폰을 대면 낭독이 재생됩니다.</p>'
+             + figs([(B + 'keyring-sq.jpg', 'NFC 키링 속지 정사각', '키링 속지 — 정사각'), (B + 'keyring-rect.jpg', 'NFC 키링 속지 직사각', '키링 속지 — 직사각')], 'g2')
+             + fill('원빈 님이 채울 자리', '낭독 원고를 고른 기준 — 어느 장면을, 왜. 그리고 키링이 연결되는 곳(유튜브 영상 / woodangro.kr/listen).')),
+        step('04', '발행', '세트로 놓이다', '북페어 매대',
+             fill('실사 컷 자리', '11. 13–14 북페어 — 책 · 카드 · 키링이 함께 놓인 매대, 손님이 키링에 휴대폰을 대는 순간 (영상 5초면 충분).')
+             + fill('원빈 님이 채울 자리', '틴케이스 사진, 제작 업체와 수량.')),
+    ])
+
+TOC = [('p1', '01', '해방일기', '인터뷰 · 편집 · 촬영'), ('p2', '02', '주먹 쥔 손으로 쓰다듬지 못해서', '집필 · 편집 · 출판'),
+       ('p3', '03', '인스타그램 연재', '글 · 조판 · 채널 운영'), ('p4', '04', '우당로의 기록', '팟캐스트 기획 · 진행 · 편집'),
+       ('p5', '05', 'woodangro.kr', '콘텐츠 기획 · 웹'), ('p6', '06', '굿즈 세트', '텍스트를 물건으로')]
+toc = ''.join(f'<li><a href="#{a}"><span class="no">{n}</span><span class="t">{E(t)}</span><span class="r">{E(r)}</span></a></li>' for a, n, t, r in TOC)
+
+BODY = f'''<main>
+<section class="cover" aria-label="표지">
+  <div class="wrap" style="display:contents">
+    <div class="wrap top mono"><span>PORTFOLIO — 2026</span><span>CONTENT EDITOR</span></div>
+    <div class="wrap mid">
+      <h1 class="kanji" aria-label="우당로"><span>遇</span><span>當</span><span class="r">路</span></h1>
+      <p class="sub"><b>안원빈 · 우당로</b><span class="mono mute">우연이 당도하는 길 — A ROAD WHERE CHANCE ARRIVES</span></p>
+    </div>
+    <div class="wrap bottom mono"><span>기록자 · 콘텐츠 에디터<br>관악, 서울</span><span style="text-align:right">한 줄의 길을 따라<br>여섯 개의 정류장 ↓</span></div>
+  </div>
+  <span class="start" data-stop="出發" data-x=".5"></span>
+</section>
+
+<section class="intro" aria-label="인트로">
+  <div class="wrap">
+    <p class="big" data-stop="" data-x="-1">감각을 <em>번역</em>합니다.</p>
+    <p class="s">기획부터 집필, 촬영, 발행까지 혼자 완주해 본 사람입니다. 사람의 이야기를 듣고, 그 이야기가 가장 잘 읽히는 형식을 찾아 끝까지 내보내는 일을 합니다.</p>
+  </div>
+</section>
+
+<section class="toc" aria-label="목차">
+  <div class="wrap">
+    <div class="label mono"><span>[ 정류장 ]</span><span>06</span></div>
+    <ol>{toc}</ol>
+  </div>
+</section>
+{P1}{P2}{P3}{P4}{P5}{P6}
+
+<section class="end" aria-label="끝">
+  <div class="wrap">
+    <div class="arrive" data-stop="到着" data-x=".5"></div>
+    <h2>THANK YOU</h2>
+    <p>같은 길을 여기까지 걸어 주셔서 고맙습니다.</p>
+    <div class="links mono">
+      <a href="https://www.instagram.com/woodang_ro/" target="_blank" rel="noopener">INSTAGRAM @woodang_ro</a>
+      <a href="https://woodangro.kr/" target="_blank" rel="noopener">WOODANGRO.KR</a>
+      <a href="https://www.youtube.com/@BEAN-zq9ng" target="_blank" rel="noopener">YOUTUBE BEAN</a>
+      <a href="https://www.podbbang.com/channels/1793756" target="_blank" rel="noopener">PODBBANG 우당로의 기록</a>
+    </div>
+  </div>
+</section>
+</main>
+'''
+
+head = HEAD.replace('</style>', EXTRA_CSS + '</style>')
+tail = TAIL.replace('시안 v2 · 01 해방일기만', '시안 v2 · 빨간 점선 = 채울 자리')
+open('index.html', 'w', encoding='utf-8').write(head + BODY + tail)
+print('built v2')

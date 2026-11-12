@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>遇當路 — 안원빈 포트폴리오 (시안)</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f3efe6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400;600;900&display=swap">
+<style>
+:root{--paper:#f3efe6;--ink:#151413;--mute:#77716a;--rule:#d9d2c4;--road:#d9381e;--card:#fbf9f4;
+  --serif:"Noto Serif KR",serif;--sans:"IBM Plex Sans KR",system-ui,sans-serif;--mono:"IBM Plex Mono","IBM Plex Sans KR",monospace;
+  --gut:clamp(36px,7vw,110px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.6}
+.mute{color:var(--mute)}
+.wrap{position:relative;z-index:1;width:min(1120px,100% - var(--gut) * 2);margin:0 auto}
+#road{position:absolute;left:0;top:0;z-index:0;pointer-events:none;overflow:visible}
+#road .base{fill:none;stroke:var(--rule);stroke-width:1.5;stroke-dasharray:2 7;stroke-linecap:round}
+#road .ink{fill:none;stroke:var(--road);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#road .st circle{fill:var(--paper);stroke:var(--road);stroke-width:2.4}
+#road .st.on circle{fill:var(--road)}
+#road .st text{font-family:var(--mono);font-size:11px;fill:var(--road);letter-spacing:.06em}
+section{position:relative}
+
+/* 표지 */
+.cover{min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;padding:28px 0 0}
+.cover .top{display:flex;justify-content:space-between;align-items:baseline}
+.cover .mid{display:flex;flex-direction:column;justify-content:center;padding:6vh 0}
+.cover .kanji{margin:0;font-family:var(--serif);font-weight:900;font-size:clamp(84px,17vw,250px);line-height:.92;letter-spacing:-.02em}
+.cover .kanji span{display:inline-block}
+.cover .kanji .r{color:var(--road)}
+.cover .sub{margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 28px;align-items:baseline}
+.cover .sub b{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.4vw,30px)}
+.cover .bottom{display:flex;justify-content:space-between;align-items:end;padding-bottom:28px;border-top:1px solid var(--ink);padding-top:12px}
+.cover .start{position:absolute;left:50%;bottom:0;width:1px;height:1px}
+
+/* 인트로 */
+.intro{padding:clamp(120px,20vh,220px) 0}
+.intro p.big{margin:0;font-family:var(--serif);font-weight:600;font-size:clamp(30px,4.6vw,62px);line-height:1.32;max-width:15em}
+.intro p.big em{font-style:normal;color:var(--road)}
+.intro p.s{margin:28px 0 0;max-width:34em;color:#3d3a36;font-size:17px}
+
+/* 목차 */
+.toc{padding:0 0 clamp(120px,18vh,200px)}
+.label{display:flex;justify-content:space-between;border-top:1px solid var(--ink);padding-top:10px;margin-bottom:28px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a,.toc li .off{display:grid;grid-template-columns:70px 1fr auto;gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.toc .no{font-family:var(--mono);font-size:13px;color:var(--road)}
+.toc .t{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,34px);line-height:1.25}
+.toc .r{font-family:var(--mono);font-size:12px;color:var(--mute);text-align:right}
+.toc li a:hover .t{color:var(--road)}
+.toc li .off{opacity:.38}
+
+/* 프로젝트 첫 장 */
+.proj{padding-bottom:clamp(80px,12vh,140px)}
+.p-title{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin:0 0 22px}
+.p-title .no{font-family:var(--mono);font-size:14px;color:var(--road)}
+.p-title h2{margin:0;font-family:var(--serif);font-weight:900;font-size:clamp(40px,6.4vw,92px);line-height:1}
+.p-title .en{font-family:var(--mono);font-size:13px;color:var(--mute);letter-spacing:.14em}
+.hero{position:relative;aspect-ratio:16/9;overflow:hidden;background:#ddd}
+.hero img{width:100%;height:100%;object-fit:cover}
+.band{background:var(--ink);color:#efeae0;display:grid;grid-template-columns:1.25fr 1.25fr 1fr;gap:clamp(18px,3vw,40px);padding:clamp(22px,3vw,38px)}
+.band h3{margin:0 0 10px;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em;color:#ff7a5c}
+.band p{margin:0;font-size:15px;line-height:1.8;color:#e6e0d4}
+.band dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:13.5px;line-height:1.55;align-content:start}
+.band dt{font-family:var(--mono);font-size:11.5px;color:#a49d90;letter-spacing:.08em;padding-top:2px;white-space:nowrap}
+.band dd{margin:0}
+.chk{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:#ffd84a;color:var(--ink);padding:0 .45em;margin-left:.35em;vertical-align:1px}
+
+/* 흐름 */
+.step{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:clamp(20px,4vw,60px);padding:clamp(56px,9vh,96px) 0 0}
+.step header .no{font-family:var(--mono);font-size:12px;color:var(--road);letter-spacing:.1em}
+.step header h3{margin:6px 0 0;font-family:var(--serif);font-weight:600;font-size:clamp(24px,2.6vw,32px);line-height:1.3}
+.step header p{margin:10px 0 0;color:var(--mute);font-size:14px;line-height:1.7}
+.step .body>p{margin:0 0 14px;max-width:36em}
+.flow{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.flow li{font-family:var(--mono);font-size:12.5px;border:1.5px solid var(--ink);padding:.35em .7em;background:var(--card)}
+.flow li.hi{background:var(--ink);color:var(--paper)}
+.flow li.arr{border:0;background:none;padding:0;color:var(--road)}
+.people{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.people div{background:var(--card);border:1px solid var(--rule);padding:14px}
+.people b{display:block;font-family:var(--serif);font-size:20px}
+.people span{font-family:var(--mono);font-size:11.5px;color:var(--mute)}
+.fill{border:1.5px dashed var(--road);background:rgba(217,56,30,.04);padding:18px 20px;margin-top:14px}
+.fill .mono{color:var(--road);margin:0 0 6px}
+.fill p{margin:0;color:#4a4540;font-size:14.5px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.eps{width:100%;border-collapse:collapse;margin-top:6px;font-size:14.5px}
+.eps td{border-bottom:1px solid var(--rule);padding:11px 8px;vertical-align:top}
+.eps td:first-child{font-family:var(--mono);font-size:12px;color:var(--road);white-space:nowrap;padding-left:0}
+.eps td.w{font-family:var(--mono);font-size:12px;color:var(--mute);white-space:nowrap}
+.eps a{text-decoration:none}
+.eps a:hover{color:var(--road)}
+.shots{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-top:18px}
+.shots figure{margin:0}
+.shots figcaption{margin-top:6px}
+
+/* 다음 정류장 자리 */
+.next{padding:clamp(60px,10vh,120px) 0;display:grid;gap:10px}
+.next .off{display:grid;grid-template-columns:70px 1fr auto;gap:18px;align-items:baseline;padding:16px 0;border-top:1px solid var(--rule);opacity:.4}
+.next .off .no{font-family:var(--mono);font-size:13px;color:var(--road)}
+.next .off .t{font-family:var(--serif);font-weight:600;font-size:22px}
+
+/* 끝 */
+.end{min-height:90svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 0}
+.end h2{margin:0;font-family:var(--serif);font-weight:900;font-size:clamp(60px,12vw,180px);line-height:.95;letter-spacing:-.01em}
+.end p{margin:20px 0 0;font-family:var(--serif);font-size:clamp(17px,1.8vw,22px)}
+.end .links{margin-top:34px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px}
+.end .links a{text-decoration:none;border-bottom:1.5px solid var(--ink)}
+.end .links a:hover{color:var(--road);border-color:var(--road)}
+.end .arrive{width:1px;height:1px;margin:0 auto 40px}
+.draft{position:fixed;right:12px;bottom:12px;z-index:5;font-family:var(--mono);font-size:11px;background:var(--ink);color:var(--paper);padding:.35em .7em}
+
+@media (max-width:820px){
+  .band{grid-template-columns:1fr}
+  .step{grid-template-columns:1fr;gap:14px}
+  .people{grid-template-columns:1fr 1fr}
+  .pair,.shots{grid-template-columns:1fr}
+  .toc li a,.toc li .off,.next .off{grid-template-columns:44px 1fr}
+  .toc .r,.next .off .r{grid-column:2;text-align:left}
+}
+</style>
+</head>
+<body>
+<svg id="road" aria-hidden="true"><path class="base" id="roadBase"/><path class="ink" id="roadInk"/><g id="stops"></g></svg>
+

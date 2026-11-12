@@ -1,0 +1,57 @@
+<span class="draft">시안 v2 · 01 해방일기만</span>
+
+<script>
+/* 遇當路 — 표지에서 마지막 장까지 이어지는 한 줄의 길 */
+(() => {
+  const svg = document.getElementById('road'), base = document.getElementById('roadBase'), ink = document.getElementById('roadInk'), g = document.getElementById('stops');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let samples = [], total = 0, marks = [];
+  function build() {
+    const W = document.documentElement.clientWidth, H = document.documentElement.scrollHeight;
+    svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const wrap = document.querySelector('.wrap').getBoundingClientRect();
+    const gutX = Math.max(14, (W - Math.min(1120, W - 2 * Math.max(36, Math.min(110, W * .07)))) / 2 * .5);
+    const pts = [...document.querySelectorAll('[data-stop]')].map(el => {
+      const r = el.getBoundingClientRect(), fx = +el.dataset.x;
+      const x = fx < 0 ? gutX : W * fx;
+      const y = r.top + scrollY + (fx < 0 ? Math.min(r.height / 2, 18) : r.height / 2);
+      return { x, y, label: el.dataset.stop };
+    });
+    // 부드러운 길: 점 사이를 세로로 흐르는 곡선, 가끔 옆으로 휘어짐
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i], dy = b.y - a.y;
+      const sway = (i % 2 ? 1 : -1) * (W < 700 ? 6 : Math.min(60, W * .05));
+      d += ` C ${a.x + sway} ${a.y + dy * .45}, ${b.x - sway} ${b.y - dy * .45}, ${b.x} ${b.y}`;
+    }
+    base.setAttribute('d', d); ink.setAttribute('d', d);
+    total = ink.getTotalLength();
+    samples = [];
+    for (let l = 0; l <= total; l += 24) samples.push([l, ink.getPointAtLength(l).y]);
+    samples.push([total, ink.getPointAtLength(total).y]);
+    ink.style.strokeDasharray = total;
+    g.innerHTML = ''; marks = [];
+    pts.forEach(p => {
+      const s = document.createElementNS('http://www.w3.org/2000/svg', 'g'); s.setAttribute('class', 'st');
+      s.innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="${p.label ? 6 : 4}"/>` + (p.label ? `<text x="${p.x + 12}" y="${p.y + 4}">${p.label}</text>` : '');
+      g.appendChild(s); marks.push([p.y, s]);
+    });
+    draw();
+  }
+  function draw() {
+    const y = scrollY + innerHeight * .62;
+    let l = total;
+    for (let i = 0; i < samples.length; i++) { if (samples[i][1] > y) { l = i ? samples[i - 1][0] : 0; break; } }
+    ink.style.strokeDashoffset = reduce ? 0 : total - l;
+    marks.forEach(([my, s]) => s.classList.toggle('on', reduce || my <= y));
+  }
+  let t = 0;
+  addEventListener('scroll', () => { if (!t) t = requestAnimationFrame(() => { t = 0; draw(); }); }, { passive: true });
+  addEventListener('resize', () => build());
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(build);
+  addEventListener('load', build);
+  build();
+})();
+</script>
+</body>
+</html>
