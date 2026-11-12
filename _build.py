@@ -19,13 +19,16 @@ WORKS = [
     dict(slug='book', no='01', kind='책 발간', title='주먹 쥔 손으로 쓰다듬지 못해서',
          desc='첫 소설. 글부터 표지·내지 디자인, 굿즈, 홍보 사이트와 영상까지 혼자 만든 책.',
          roles='집필 + 출판 디자인 + 홍보', pic='img/work/book.jpg'),
-    dict(slug='haebang', no='02', kind='인터뷰 · 영상', title='해방일기',
+    dict(slug='web', no='02', kind='웹 디자인', title='woodangro.kr',
+         desc='책을 위한 사이트. 포스터 한 장이 입구가 되고, 카드 · 영화관 · 카세트 · 게임 네 개의 방으로 이어진다.',
+         roles='기획 + 디자인 + 개발', pic='img/work/web.jpg'),
+    dict(slug='haebang', no='03', kind='인터뷰 · 영상', title='해방일기',
          desc='알코올 중독을 겪은 사람들의 이야기를 인터뷰로 담은 기록. 춘천시중독관리통합지원센터 협업, 8회.',
          roles='기획 + 인터뷰 + 촬영 + 편집', pic='img/work/haebang.jpg'),
-    dict(slug='instagram', no='03', kind='연재', title='인스타그램 연재',
+    dict(slug='instagram', no='04', kind='연재', title='인스타그램 연재',
          desc='짧은 조각글을 직접 조판해 이미지로 올린 연재. 다섯 편, 41장.',
          roles='글 + 조판', pic='img/work/ig.jpg'),
-    dict(slug='etc', no='04', kind='그 밖의 작업', title='기타',
+    dict(slug='etc', no='05', kind='그 밖의 작업', title='기타',
          desc='금천 청년 아트크루 팝업작업실, 팟캐스트 ‘우당로의 기록’, 영상, 매거진, 앨범커버.',
          roles='기획 + 운영 + 제작', pic='img/work/etc.jpg'),
 ]
@@ -62,7 +65,7 @@ def head(title, desc, R, path, og='img/og.jpg'):
 
 def bar(R, cur):
     work_href = '#work' if cur == 'home' else f'{R}#work'
-    wc = ' aria-current="page"' if cur in ('book', 'haebang', 'instagram', 'etc') else ''
+    wc = ' aria-current="page"' if cur in ('book', 'web', 'haebang', 'instagram', 'etc') else ''
     ac = ' aria-current="page"' if cur == 'about' else ''
     return f'''
 <div class="bar" role="navigation" aria-label="사이트 메뉴">
@@ -75,7 +78,7 @@ def bar(R, cur):
 
 
 def foot(R):
-    works = ''.join(f'<li><a href="{R}{w["slug"]}/">{E(w["title"] if w["slug"] != "book" else "책 발간")}</a></li>' for w in WORKS)
+    works = ''.join(f'<li><a href="{R}{w["slug"]}/">{E({"book": "책 발간", "web": "woodangro.kr"}.get(w["slug"], w["title"]))}</a></li>' for w in WORKS)
     return f'''
 <footer class="foot rv">
   <div class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -179,7 +182,7 @@ def index():
 </header>
 
 <section class="works" id="work" aria-labelledby="work-t">
-  <div class="sec-label mono"><h2 id="work-t" class="mono" style="margin:0;font-weight:400">[ 작업 ]</h2><span class="mute">04</span></div>
+  <div class="sec-label mono"><h2 id="work-t" class="mono" style="margin:0;font-weight:400">[ 작업 ]</h2><span class="mute">{len(WORKS):02d}</span></div>
   <div class="grid3">{cards}
   </div>
 </section>
@@ -261,7 +264,7 @@ def book():
     <li class="step rv">
       <header><p class="mono">06</p><h3>사이트와 영상</h3></header>
       <div>
-        <div class="txt"><p>책 소개 사이트 woodangro.kr를 열고, 신문 지면 같은 지면판, 1장을 스크롤로 읽는 페이지, 심리 테스트, 메신저 게임 ‘읽지 않음’을 붙였습니다. 1장은 영상으로도 옮겼습니다.</p></div>
+        <div class="txt"><p>책 소개 사이트 woodangro.kr를 열고, 신문 지면 같은 지면판, 1장을 스크롤로 읽는 페이지, 심리 테스트, 메신저 게임 ‘읽지 않음’을 붙였습니다. 1장은 영상으로도 옮겼습니다. 사이트는 이후 포스터형으로 새로 만들었습니다 — <a href="{R}web/">woodangro.kr 작업 보기 →</a></p></div>
         <div class="row c2">{img("img/book/site-hero.jpg", "woodangro.kr 첫 화면", R, "shot", gallery="sites", title="woodangro.kr")}{img("img/book/site-zine.jpg", "지면판 zine.woodangro.kr", R, "shot", gallery="sites", title="지면판")}{img("img/book/read-fork.jpg", "1장 미리 읽기", R, "shot", gallery="sites", title="1장 미리 읽기")}{img("img/book/site-more.jpg", "책을 펼치기 전에", R, "shot", gallery="sites", title="woodangro.kr")}{img("img/book/site-test.jpg", "심리 테스트", R, "shot", gallery="sites", title="심리 테스트")}{img("img/book/site-unread.jpg", "읽지 않음", R, "shot", gallery="sites", title="읽지 않음")}</div>
         <figure style="margin-top:12px"><video class="player" src="{R}media/trailer.mp4" poster="{R}media/trailer-poster.jpg" controls preload="none" playsinline></video><figcaption class="mono">1장 예고편 · 49초 · 무음</figcaption></figure>
       </div>
@@ -279,6 +282,73 @@ def book():
 '''
     s += nextwork(R, 'book') + '</main>' + foot(R) + end(R)
     write('book/index.html', s)
+
+
+# ───────────────────────── woodangro.kr ─────────────────────────
+def web():
+    R = '../'
+    w = [x for x in WORKS if x['slug'] == 'web'][0]
+    def shot(n, alt):
+        return img(f'img/web/{n}.jpg', alt, R, 'shot', gallery='web', title='woodangro.kr')
+    s = head('woodangro.kr — 안원빈 포트폴리오',
+             '책 『주먹 쥔 손으로 쓰다듬지 못해서』를 위한 사이트 woodangro.kr. 포스터형 메인과 카드·영화관·카세트·게임 네 개의 방을 기획·디자인·개발.',
+             R, 'web/', 'img/work/web.jpg')
+    s += bar(R, 'web')
+    s += '<main>' + phead(R, w, '책을 위한 사이트. 포스터 한 장이 입구가 되고, 네 개의 방으로 이어집니다.')
+    mobiles = ''.join(img(f'img/web/m-{n}.jpg', alt, R, 'shot', gallery='webm', title='모바일') for n, alt in
+                      [('main', '모바일 메인'), ('card', '모바일 CARD'), ('cinema', '모바일 映畫館'), ('listen', '모바일 LISTEN'), ('game', '모바일 FLASH GAME')])
+    s += f"""
+<div class="p-body">
+{meta([("역할", "기획<br>디자인<br>개발 (HTML · CSS · JS)"), ("기간", "2026. 10. 30 – 11. 12"), ("구성", "메인 + 방 4개<br>1장 미리 읽기 · 심리 테스트 · 읽지 않음"), ("바로가기", ext(LINKS["book"], "woodangro.kr") + "<br>" + ext(LINKS["book"] + "listen/", "LISTEN"))])}
+<div class="p-main">
+  <figure class="rv">{img("img/web/d-main.jpg", "woodangro.kr 메인 — 포스터", R, "shot", gallery="web", title="woodangro.kr", lazy=False)}<figcaption class="mono">메인 — 흑백 삽화를 빨강·노랑 두 색으로 바꾸고, 영어 · 한자 · 일본어로만 지면을 채웠습니다.</figcaption></figure>
+  <div class="prose rv">
+    <p class="first">책 소개 페이지로 시작한 사이트가 2주 동안 스물한 번 바뀌었습니다. 마지막에 남은 건 잡지의 한 펼침면 같은 메인입니다.</p>
+    <p>메인의 큰 글자들이 곧 문입니다. CARDS를 누르면 연초 카드를 섞는 방, 映畫館을 누르면 낭독 영상을 트는 극장, LISTEN은 카세트 라디오, FLASH GAME은 옛날 컴퓨터로 이어집니다. 설명 대신 장소를 만들고 싶었습니다.</p>
+  </div>
+
+  <h2 class="sec-label mono" style="font-weight:400"><span>[ 방 ]</span><span class="mute">04</span></h2>
+  <ol class="steps">
+    <li class="step rv">
+      <header><p class="mono">01</p><h3>CARD · カード</h3></header>
+      <div>
+        <div class="txt"><p>책 속 열두 장면을 옮긴 연초 카드를 트럼프 카드 위에서 섞습니다. 섞을 때마다 앞판과 겹치지 않는 다섯 장이 펼쳐지고, 한 장을 누르면 그 장면의 본문을 읽을 수 있습니다.</p></div>
+        <div class="row c2 stack">{shot("d-card", "CARD — 다섯 장 펼침")}{shot("d-card-read", "CARD — 카드 읽기")}</div>
+      </div>
+    </li>
+    <li class="step rv">
+      <header><p class="mono">02</p><h3>映畫館</h3></header>
+      <div>
+        <div class="txt"><p>극장 사진 속 스크린 자리에 낭독 영상을 겹쳤습니다. 화면 크기가 달라져도 영상이 스크린 밖으로 나가지 않게 맞췄습니다.</p></div>
+        <div class="row">{shot("d-cinema", "映畫館 — 낭독 영상 상영관")}</div>
+      </div>
+    </li>
+    <li class="step rv">
+      <header><p class="mono">03</p><h3>LISTEN</h3></header>
+      <div>
+        <div class="txt"><p>노란 카세트는 낭독, 하얀 카세트는 책에서 나온 노래 일곱 곡. 테이프를 라디오에 넣으면 재생됩니다. 흰 바탕에 검정과 노랑, 세 가지 색만 썼습니다.</p></div>
+        <div class="row">{shot("d-listen", "LISTEN — 카세트 라디오")}</div>
+      </div>
+    </li>
+    <li class="step rv">
+      <header><p class="mono">04</p><h3>FLASH GAME</h3></header>
+      <div>
+        <div class="txt"><p>옛날 컴퓨터 화면에서 게임을 고르거나, 책상 위 티켓을 모니터에 밀어 넣으면 심리 테스트와 메신저 게임 ‘읽지 않음’으로 넘어갑니다.</p></div>
+        <div class="row">{shot("d-game", "FLASH GAME — 게임 선택")}</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2 class="sec-label mono" style="font-weight:400"><span>[ 모바일 ]</span><span class="mute">05</span></h2>
+  <div class="rail phones rv">{mobiles}</div>
+
+  <h2 class="sec-label mono" style="font-weight:400"><span>[ 과정 ]</span><span class="mute">21 COMMITS</span></h2>
+  <figure class="rv"><video class="player" src="{R}media/web-making.mp4" poster="{R}media/web-making-poster.jpg" controls preload="none" playsinline></video><figcaption class="mono">첫 공개부터 포스터 메인까지 · 30초 · 무음 — 첫 책 소개 페이지, 카세트 라디오, 카지노, 1970년대 빠칭코를 거쳐 지금의 메인으로.</figcaption></figure>
+</div>
+</div>
+"""
+    s += nextwork(R, 'web') + '</main>' + foot(R) + end(R)
+    write('web/index.html', s)
 
 
 # ───────────────────────── 해방일기 ─────────────────────────
@@ -475,6 +545,6 @@ def extras():
           + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>2026-11-09</lastmod></url>\n' for u in urls) + '</urlset>\n')
 
 
-for f in (index, book, haebang, instagram, etc, about, extras):
+for f in (index, book, web, haebang, instagram, etc, about, extras):
     f()
 print('built')
