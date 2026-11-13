@@ -26,7 +26,7 @@ WORKS = [
          desc='알코올 중독을 겪은 사람들의 이야기를 인터뷰로 담은 기록. 춘천시중독관리통합지원센터 협업, 8회.',
          roles='기획 + 인터뷰 + 촬영 + 편집', pic='img/work/haebang.jpg'),
     dict(slug='instagram', no='04', kind='연재', title='인스타그램 연재',
-         desc='짧은 조각글을 직접 조판해 이미지로 올린 연재. 다섯 편, 41장.',
+         desc='짧은 조각글을 직접 조판해 이미지로 올린 연재. 여섯 편, 42장.',
          roles='글 + 조판', pic='img/work/ig.jpg'),
     dict(slug='etc', no='05', kind='그 밖의 작업', title='기타',
          desc='금천 청년 아트크루 팝업작업실, 팟캐스트 ‘우당로의 기록’, 영상, 매거진, 앨범커버.',
@@ -396,7 +396,7 @@ def haebang():
 
 
 # ───────────────────────── 인스타그램 연재 ─────────────────────────
-SERIES = [(1, '오른눈', 10), (2, '올해는 기쁜 일이 있으려나', 6), (3, '장마의 형태', 9), (4, '흑백인간', 8), (5, '단편소설', 8)]
+SERIES = [(1, '오른눈', 10), (2, '올해는 기쁜 일이 있으려나', 6), (3, '장마의 형태', 9), (4, '흑백인간', 8), (5, '단편소설', 8), (6, '우울은 수용성이래', 1)]
 
 
 def instagram():
@@ -417,7 +417,7 @@ def instagram():
     s += '<main>' + phead(R, w, '짧은 조각글을 직접 조판해 이미지로 올린 연재.')
     s += f'''
 <div class="p-body">
-{meta([("역할", "글<br>조판"), ("채널", "@woodang_ro"), ("연재", "다섯 편 · 41장"), ("바로가기", ext(LINKS["insta"], "인스타그램"))])}
+{meta([("역할", "글<br>조판"), ("채널", "@woodang_ro"), ("연재", "여섯 편 · 42장"), ("바로가기", ext(LINKS["insta"], "인스타그램"))])}
 <div class="p-main">
   <div class="prose rv">
     <p class="first">글을 쓰기 시작하면서 ‘우당로’라는 이름으로 인스타그램을 열고, 짧은 조각글을 직접 조판해 이미지로 올렸습니다.</p>
@@ -443,7 +443,7 @@ def etc():
     s += '<main>' + phead(R, w, '기획하고 운영하고 만든 것들.')
     s += f'''
 <div class="p-body">
-{meta([("포함", "금천 청년 아트크루<br>우당로의 기록<br>영상<br>매거진 작업<br>앨범커버")])}
+{meta([("포함", "금천 청년 아트크루<br>우당로의 기록<br>영상<br>tooo00o_<br>매거진 작업<br>앨범커버")])}
 <div class="p-main">
   <section class="block rv" aria-labelledby="b1">
     <header><h2 id="b1">금천 청년 아트크루 · 팝업작업실</h2><span class="mono mute">기획 · 운영</span></header>
@@ -467,6 +467,16 @@ def etc():
       <figure>{yt("O-c5wxwpWKc", "동묘")}<figcaption class="mono">동묘</figcaption></figure>
       <figure>{yt("44BUlVw96fA", "파도가 칠때는 서핑을")}<figcaption class="mono">ep.8 파도가 칠때는 서핑을</figcaption></figure>
     </div>
+  </section>
+
+  <section class="block rv" aria-labelledby="b6">
+    <header><h2 id="b6">tooo00o_</h2><span class="mono mute">AI 영상 채널 · <a href="https://www.instagram.com/tooo00o_/" target="_blank" rel="noopener">@tooo00o_ ↗</a></span></header>
+    <p class="txt">Higgsfield(AI)로 만드는 영상 채널입니다. 이야기가 있는 단편영화 같은 시네마틱 · 예술 뮤직비디오를 만듭니다.</p>
+    <div class="row c2 stack" style="margin-top:20px">
+      <figure><video src="{R}media/tooo/the_artist_is_present_homage.mp4" poster="{R}media/tooo/the_artist_is_present_homage.jpg" controls preload="none" playsinline muted loop style="width:100%;background:#000"></video><figcaption class="mono">The Artist Is Present — 오마주</figcaption></figure>
+      <figure><video src="{R}media/tooo/tooo_c06_169_long_bw.mp4" poster="{R}media/tooo/tooo_c06_169_long_bw.jpg" controls preload="none" playsinline muted loop style="width:100%;background:#000"></video><figcaption class="mono">C06 — 흑백</figcaption></figure>
+    </div>
+    <figure style="max-width:360px;margin-top:12px"><video src="{R}media/tooo/tooo_strobe_color_v3.mp4" poster="{R}media/tooo/tooo_strobe_color_v3.jpg" controls preload="none" playsinline muted loop style="width:100%;background:#000"></video><figcaption class="mono">N°001 — It was clear, so no one noticed.</figcaption></figure>
   </section>
 
   <section class="block rv" aria-labelledby="b4">

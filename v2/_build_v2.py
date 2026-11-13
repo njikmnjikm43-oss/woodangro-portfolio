@@ -139,18 +139,18 @@ P2 = project('02', 'p2', '주먹 쥔 손으로 쓰다듬지 못해서', 'FIRST N
     ], fit=True)
 
 # ───────── 03 인스타그램 연재 ─────────
-SERIES = [(1, '오른눈', 10), (2, '올해는 기쁜 일이 있으려나', 6), (3, '장마의 형태', 9), (4, '흑백인간', 8), (5, '단편소설', 8)]
+SERIES = [(1, '오른눈', 10), (2, '올해는 기쁜 일이 있으려나', 6), (3, '장마의 형태', 9), (4, '흑백인간', 8), (5, '단편소설', 8), (6, '우울은 수용성이래', 1)]
 I = '../img/ig/'
 P3 = project('03', 'p3', '인스타그램 연재', 'INSTAGRAM SERIES · @woodang_ro', 'img/ig-hero.jpg', '인스타그램 연재 다섯 편의 첫 장',
     '피드를 넘기는 손가락이 멈추는 건 몇 초입니다. 그 안에 짧은 글 한 편을 끝까지 읽히게 하려면 무엇을 줄이고, 무엇을 보여줘야 할까.',
-    '‘우당로’라는 이름으로 짧은 조각글을 직접 조판해 이미지로 올렸습니다. 다섯 편, 41장. 이 연재에서 쌓인 이야기들이 첫 소설로 이어졌습니다.',
-    [('작업기간', '2025. 08. 05 – 현재'), ('기여도', '글 · 조판 · 운영 단독'), ('역할', '작가 · 에디터 · 채널 운영'), ('프로그램', 'Canva · Photoshop<br>InDesign'), ('결과', '5편 · 41장<br>최고 반응 좋아요 106')],
+    '‘우당로’라는 이름으로 짧은 조각글을 직접 조판해 이미지로 올렸습니다. 여섯 편, 42장. 이 연재에서 쌓인 이야기들이 첫 소설로 이어졌습니다.',
+    [('작업기간', '2025. 08. 05 – 현재'), ('기여도', '글 · 조판 · 운영 단독'), ('역할', '작가 · 에디터 · 채널 운영'), ('프로그램', 'Canva · Photoshop<br>InDesign'), ('결과', '6편 · 42장<br>최고 반응 좋아요 106')],
     [
         step('01', '질문', '몇 초 안에', '피드에서 글이 읽히는 조건',
              '<p>한 편을 여러 장으로 나눠 올렸습니다. 첫 장은 제목을 단 표지이고, 넘길수록 글이 이어집니다.</p>'
              + '<p>지킨 원칙은 하나, 눈에 잘 들어오는 것이었습니다. 책을 조판하면서도 느꼈지만 미감에 정답은 없습니다. 내 눈에 보기 편하게, 그리고 읽을 사람을 정하고 그 사람의 눈에 잘 들어오게. 그게 전부입니다.</p>'),
-        step('02', '기획', '다섯 편의 표지', '편마다 다른 얼굴',
-             figs([(f'{I}s{s}-01.jpg', t, t) for s, t, n in SERIES], 'g5')),
+        step('02', '기획', '여섯 편의 표지', '편마다 다른 얼굴',
+             figs([(f'{I}s{s}-01.jpg', t, t) for s, t, n in SERIES], 'g3')),
         step('03', '원고', '한 편을 처음부터 끝까지', '오른눈 · 10장',
              figs([(f'{I}s1-{k:02d}.jpg', f'오른눈 {k}', f'{k:02d}') for k in range(1, 11)], 'g5')
 ),
@@ -230,9 +230,26 @@ P6 = project('06', 'p6', '굿즈 세트', 'OBJECTS · 2026', 'img/goods-set.jpg'
 ),
     ])
 
+# ───────── 07 tooo00o_ ─────────
+T = '../media/tooo/'
+def vid(name, cap, style=''):
+    return f'<figure style="margin:0{style}"><video src="{T}{name}.mp4" poster="{T}{name}.jpg" controls preload="none" playsinline muted loop style="width:100%;display:block;background:#000"></video><figcaption class="mono mute" style="margin-top:6px">{cap}</figcaption></figure>'
+P7 = project('07', 'p7', 'tooo00o_', 'AI FILM CHANNEL · 2026', 'img/tooo-hero.jpg', 'tooo00o_ 영상 C06 — 흐린 하늘 아래 들판에서 흰 옷을 입고 춤추는 사람',
+    '글로 쓰던 장면을 움직이는 이미지로 옮길 수 있을까. 이야기가 있는 단편영화처럼, 몇십 초 안에 하나의 장면이 남는 영상을 만들고 싶었습니다.',
+    'Higgsfield(AI)로 만드는 영상 채널 @tooo00o_ 입니다. 시네마틱 · 예술 뮤직비디오를 중심으로, 기획부터 연출과 편집까지 혼자 합니다.',
+    [('작업기간', '2026. 11 – 현재'), ('기여도', '단독'), ('역할', '기획 · 연출 · 편집'), ('프로그램', 'Higgsfield (AI)'), ('결과', '영상 3편<br>인스타그램 @tooo00o_')],
+    [
+        step('01', '기획', '세 갈래의 영상', '무엇이 주인공인가',
+             '<div class="roles3"><div><b>서사</b><span>짧아도 시작과 끝이 있는 이야기.</span></div><div><b>상징 · 이미지</b><span>한 장면, 한 문장이 남는 영상.</span></div><div><b>공간 · 분위기</b><span>장소와 공기가 주인공인 영상.</span></div></div>'),
+        step('02', '작업', '세 편', '16:9 두 편 · 9:16 한 편',
+             '<div class="g g2">' + vid('the_artist_is_present_homage', 'The Artist Is Present — 오마주 · 25초') + vid('tooo_c06_169_long_bw', 'C06 — 흑백 · 20초') + '</div>'
+             + '<div class="g g3">' + vid('tooo_strobe_color_v3', 'N°001 — “It was clear, so no one noticed.” · 15초') + '</div>'
+             + '<p style="margin-top:14px"><a href="https://www.instagram.com/tooo00o_/" target="_blank" rel="noopener">인스타그램 @tooo00o_ →</a></p>'),
+    ])
+
 TOC = [('p1', '01', '해방일기', '인터뷰 · 편집 · 촬영'), ('p2', '02', '주먹 쥔 손으로 쓰다듬지 못해서', '집필 · 편집 · 출판'),
        ('p3', '03', '인스타그램 연재', '글 · 조판 · 채널 운영'), ('p4', '04', '우당로의 기록', '팟캐스트 기획 · 진행 · 편집'),
-       ('p5', '05', 'woodangro.kr', '콘텐츠 기획 · 웹'), ('p6', '06', '굿즈 세트', '텍스트를 물건으로')]
+       ('p5', '05', 'woodangro.kr', '콘텐츠 기획 · 웹'), ('p6', '06', '굿즈 세트', '텍스트를 물건으로'), ('p7', '07', 'tooo00o_', 'AI 영상 · 기획 · 연출')]
 toc = ''.join(f'<li><a href="#{a}"><span class="no">{n}</span><span class="t">{E(t)}</span><span class="r">{E(r)}</span></a></li>' for a, n, t, r in TOC)
 
 BODY = f'''<main>
@@ -243,7 +260,7 @@ BODY = f'''<main>
       <h1 class="kanji" aria-label="우당로"><span>遇</span><span>當</span><span class="r">路</span></h1>
       <p class="sub"><b>안원빈 · 우당로</b><span class="mono mute">우연이 당도하는 길 — A ROAD WHERE CHANCE ARRIVES</span></p>
     </div>
-    <div class="wrap bottom mono"><span>기록자 · 콘텐츠 에디터<br>관악, 서울</span><span style="text-align:right">한 줄의 길을 따라<br>여섯 개의 정류장 ↓</span></div>
+    <div class="wrap bottom mono"><span>기록자 · 콘텐츠 에디터<br>관악, 서울</span><span style="text-align:right">한 줄의 길을 따라<br>일곱 개의 정류장 ↓</span></div>
   </div>
   <span class="start" data-stop="出發" data-x=".5"></span>
 </section>
@@ -257,11 +274,11 @@ BODY = f'''<main>
 
 <section class="toc" aria-label="목차">
   <div class="wrap">
-    <div class="label mono"><span>[ 정류장 ]</span><span>06</span></div>
+    <div class="label mono"><span>[ 정류장 ]</span><span>07</span></div>
     <ol>{toc}</ol>
   </div>
 </section>
-{P1}{P2}{P3}{P4}{P5}{P6}
+{P1}{P2}{P3}{P4}{P5}{P6}{P7}
 
 <section class="end" aria-label="끝">
   <div class="wrap">
@@ -271,6 +288,7 @@ BODY = f'''<main>
     <div class="links mono">
       <a href="https://www.instagram.com/woodang_ro/" target="_blank" rel="noopener">INSTAGRAM @woodang_ro</a>
       <a href="https://woodangro.kr/" target="_blank" rel="noopener">WOODANGRO.KR</a>
+      <a href="https://www.instagram.com/tooo00o_/" target="_blank" rel="noopener">INSTAGRAM @tooo00o_</a>
       <a href="https://www.youtube.com/@BEAN-zq9ng" target="_blank" rel="noopener">YOUTUBE BEAN</a>
       <a href="https://www.podbbang.com/channels/1793756" target="_blank" rel="noopener">PODBBANG 우당로의 기록</a>
     </div>
