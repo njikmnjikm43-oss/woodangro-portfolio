@@ -256,9 +256,11 @@ def book():
     <li class="step rv">
       <header><p class="mono">05</p><h3>굿즈</h3></header>
       <div>
-        <div class="txt"><p>책 속 열두 장면을 옛 담뱃갑에 들어 있던 카드처럼 옮긴 연초 카드, 소설 속 문장을 담배 모양으로 말아 담은 틴케이스, 낭독 영상으로 이어지는 NFC 키링을 만들었습니다.</p></div>
+        <div class="txt"><p>책 속 열두 장면을 옛 담뱃갑에 들어 있던 카드처럼 옮긴 연초 카드, 소설 속 문장을 담배 모양으로 말아 담은 틴케이스, 낭독 영상으로 이어지는 NFC 키링, 스티커를 만들었습니다.</p></div>
         <div class="rail cards">{cards}</div><p class="mono mute" style="margin:6px 0 0">연초 카드 12장 · 뒷면에는 그 장면의 본문</p>
-        <figure style="margin-top:12px"><div class="row c2 stack">{img("img/book/keyring-sq.jpg", "NFC 키링 속지 (정사각)", R, "", gallery="keyring", title="키링 속지")}{img("img/book/keyring-rect.jpg", "NFC 키링 속지 (직사각)", R, "", gallery="keyring", title="키링 속지")}</div><figcaption class="mono">낭독 NFC 키링 속지 — 반으로 접는 양면</figcaption></figure>
+        <figure style="margin-top:12px"><div class="row c2 stack">{img("img/goods/tin-hand.jpg", "틴케이스에서 연초 카드를 꺼내는 손", R, "", gallery="goods", title="굿즈")}{img("img/goods/set-flatlay.jpg", "틴케이스, 봉투, 카드, 스티커 구성", R, "", gallery="goods", title="굿즈")}</div><figcaption class="mono">틴케이스와 연초 카드 · 구성</figcaption></figure>
+        <figure style="margin-top:12px"><div class="row c2 stack">{img("img/goods/keyring-bag.jpg", "에코백에 단 낭독 NFC 키링", R, "", gallery="goods", title="굿즈")}{img("img/goods/keyring-open.jpg", "펼친 키링 양면 속지", R, "", gallery="goods", title="굿즈")}</div><figcaption class="mono">낭독 NFC 키링 — 반으로 접는 양면 속지</figcaption></figure>
+        <figure style="margin-top:12px">{img("img/goods/sticker.jpg", "노트북에 붙인 우당로 · 고양이 · 꽃다발 스티커", R, "", gallery="goods", title="굿즈")}<figcaption class="mono">스티커 · 사진은 모두 목업</figcaption></figure>
       </div>
     </li>
     <li class="step rv">
