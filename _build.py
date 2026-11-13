@@ -340,10 +340,7 @@ def web():
     </li>
   </ol>
 
-  <h2 class="sec-label mono" style="font-weight:400"><span>[ 모바일 ]</span><span class="mute">05</span></h2>
-  <div class="rail phones rv">{mobiles}</div>
-
-  <h2 class="sec-label mono" style="font-weight:400"><span>[ 과정 ]</span><span class="mute">21 COMMITS</span></h2>
+  <h2 class="sec-label mono" style="font-weight:400"><span>[ 과정 ]</span><span class="mute">2026. 10 – 11</span></h2>
   <figure class="rv"><video class="player" src="{R}media/web-making.mp4" poster="{R}media/web-making-poster.jpg" controls preload="none" playsinline></video><figcaption class="mono">첫 공개부터 포스터 메인까지 · 30초 · 무음 — 첫 책 소개 페이지, 카세트 라디오, 카지노, 1970년대 빠칭코를 거쳐 지금의 메인으로.</figcaption></figure>
 </div>
 </div>
